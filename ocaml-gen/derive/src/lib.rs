@@ -296,9 +296,10 @@ pub fn derive_ocaml_enum(item: TokenStream) -> TokenStream {
             let name = <Self as ::ocaml_gen::OCamlDesc>::ocaml_desc(env, &global_generics);
 
             if new_type {
-                format!("type nonrec {} = {}", name, generics_ocaml)
+                format!("type {} = {}", name, generics_ocaml)
             } else {
-                format!("type nonrec {} = {}", rename.expect("type alias must have a name"), name)
+                let alias_name = rename.expect("type alias must have a name");
+                format!("type {} = {}", alias_name, name)
             }
         }
     };
@@ -577,13 +578,13 @@ pub fn derive_ocaml_gen(item: TokenStream) -> TokenStream {
             let name = <Self as ::ocaml_gen::OCamlDesc>::ocaml_desc(env, &global_generics);
 
             if new_type {
-                format!("type nonrec {} = {}", name, generics_ocaml)
+                format!("type {} = {}", name, generics_ocaml)
             } else {
                 // add the alias
                 let ty_name = rename.expect("bug in ocaml-gen: rename should be Some");
                 env.add_alias(ty_id, ty_name);
 
-                format!("type nonrec {} = {}", ty_name, name)
+                format!("type {} = {}", ty_name, name)
             }
         }
     };
@@ -709,13 +710,13 @@ pub fn derive_ocaml_custom(item: TokenStream) -> TokenStream {
             let name = <Self as ::ocaml_gen::OCamlDesc>::ocaml_desc(env, &[]);
 
             if new_type {
-                format!("type nonrec {}", name)
+                format!("type {}", name)
             } else {
                 // add the alias
                 let ty_name = rename.expect("bug in ocaml-gen: rename should be Some");
                 env.add_alias(ty_id, ty_name);
 
-                format!("type nonrec {} = {}", ty_name, name)
+                format!("type {} = {}", ty_name, name)
             }
         }
     };
