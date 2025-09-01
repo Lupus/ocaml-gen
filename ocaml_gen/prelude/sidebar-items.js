@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"macro":["decl_fake_generic","decl_func","decl_module","decl_type","decl_type_alias"]};
